@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+ 	<changeSet author="Fabricio Alves" id="1">
+		<sql>
+			CREATE TABLE competencia
+			(
+			   id_competencia serial CONSTRAINT competencia_pk PRIMARY KEY , 
+			   nm_competencia character varying(100), 
+			   data_base date
+			) 
+			WITH (
+			  OIDS = FALSE
+			)
+		</sql>
+	</changeSet>	
+	<changeSet author="Fabricio Alves" id="2">
+		<sql>
+			CREATE TABLE carteira
+			(
+			   id_carteira serial CONSTRAINT carteira_pk PRIMARY KEY , 
+			   nm_carteira character varying(100)
+			) 
+			WITH (
+			  OIDS = FALSE
+			)
+		</sql>
+	</changeSet>	
+	<changeSet author="Fabricio Alves" id="3">
+		<sql>
+			CREATE TABLE conta
+			(
+			   id_conta serial CONSTRAINT conta_pk PRIMARY KEY , 
+			   nm_conta character varying(100),
+			   id_carteira_default integer CONSTRAINT carteira_fk REFERENCES carteira(id_carteira)
+			) 
+			WITH (
+			  OIDS = FALSE
+			)
+		</sql>
+	</changeSet>
+	<changeSet author="Fabricio Alves" id="4">
+		<sql>
+			CREATE TABLE entrada_saida
+			(
+			   id_entrada_saida serial CONSTRAINT entrada_saida_pk PRIMARY KEY , 
+			   tipo_entradata_saida char(1),
+			   vl_entrada_saida numeric(12,3),
+			   vl_pago numeric(12,3),
+			   id_carteira integer CONSTRAINT carteira_fk REFERENCES carteira(id_carteira),
+			   id_conta integer CONSTRAINT conta_fk REFERENCES conta(id_conta),
+			   dt_vencimento date,
+			   dt_liquidacao date
+			) 
+			WITH (
+			  OIDS = FALSE
+			)
+		</sql>
+	</changeSet>	
+</databaseChangeLog>
