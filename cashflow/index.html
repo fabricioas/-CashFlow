@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" ng-app="cashflow">
+<head>
+<meta charset="UTF-8">
+<title>Cash Flow</title>
+<link rel="stylesheet" href="./css/bootstrap/css/bootstrap.css">
+</head>
+<body ng-controller="IndexController">
+
+	<div class="panel panel-primary">
+		<!-- Default panel contents -->
+		<div class="panel-heading">Menu</div>
+		<div class="panel-body">
+			<button ng-click="openConta()" type="button" class="btn btn-default btn-lg" aria-label="Left Align">
+				<span class="glyphicon glyphicon-cd" aria-hidden="true"></span>
+				<div>Conta</div>
+			</button>
+			<button ng-click="openFluxo()" type="button" class="btn btn-default btn-lg" aria-label="Left Align">
+				<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+				<div>Fluxo de Caixa</div>
+			</button>
+		</div>
+
+	</div>
+	<script type="text/javascript" src="./js/angular.js"></script>
+	<script type="text/javascript" src="./IndexController.js"></script>
+</body>
+</html>

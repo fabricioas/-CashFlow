@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" ng-app="cashflow">
+<head>
+<meta charset="UTF-8">
+<title>Cash Flow</title>
+<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="../css/ngDialog.css">
+<link rel="stylesheet" href="../css/ngDialog-theme-default.css">
+<link rel="stylesheet" href="../css/ngDialog-theme-plain.css">
+<style type="text/css">
+	.table{
+		cursor: pointer;
+	}
+</style>
+</head>
+<body ng-controller="FluxoCaixaController">
+
+	<div class="panel panel-primary">
+		<!-- Default panel contents -->
+		<div class="panel-heading">Fluxo de Caixa</div>
+		<div class="panel-body">
+			<!-- Table -->
+			<button type="button"         
+				ng-dialog="firstDialogId"
+				ng-dialog-controller="FluxoCaixaController"
+        		ng-dialog-class="ngdialog-theme-default"
+        		ng-dialog-scope="this"
+        		ng-dialog-pre-close-callback="directivePreCloseCallback"
+        		ng-dialog-show-close="false">
+				<span>Lançar Entrada</span>
+				</button>
+			<button ng-click="busca()">
+				<span>Lançar Saída</span>
+			</button>
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="200px">Conta</th>
+						<th width="80px">Janeiro</th>
+						<th width="80px">Fevereiro</th>
+						<th width="80px">Março</th>
+						<th width="80px">Abril</th>
+						<th width="80px">Maio</th>
+						<th width="80px">Junho</th>
+						<th width="80px">Julho</th>
+						<th width="80px">Agosto</th>
+						<th width="80px">Setembro</th>
+						<th width="80px">Outubro</th>
+						<th width="80px">Novembro</th>
+						<th width="80px">Dezembro</th>
+						<th width="100px">Total</th>
+						<th width="100px">Total Pago</th>
+					</tr>
+				</thead>
+				<tbody ng-repeat="fluxo in fluxos">
+					<tr>
+						<td ng-dialog="editOrPay">{{fluxo.nm_conta}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.janeiro}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.fevereiro}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.marco}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.abril}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.maio}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.junho}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.julho}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.agosto}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.setembro}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.outubro}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.novembro}}</td>
+						<td ng-click="openEditOrPay(fluxo);">{{fluxo.dezembro}}</td>
+						<td >{{fluxo.total}}</td>
+						<td >{{fluxo.total_pago}}</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>Totais</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+	</div>
+<script type="text/ng-template" id="firstDialogId">
+        <div>
+			<div class="panel panel-primary">
+					<div class="panel-body">
+						<form name="formLancamento"  class="form-horizontal">
+							<fieldset>
+							    <legend>Lançamento</legend>
+								<div class="control-group">
+								    <label for="conta" class="control-label">Conta:</label>
+  									<input id="conta" name="conta" ng-model="lancamento.id_conta" required placeholder="Conta…">
+									<span class="error" ng-show="formLancamento.conta.$error.required">*</span><br>
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Carteira:</label>
+  									<input name="carteira" ng-model="lancamento.id_carteira" required placeholder="Carteira…">
+									<span class="error" ng-show="formLancamento.carteira.$error.required">*</span><br>
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Data Vencimento:</label>
+  									<input name="vencimento" ng-model="lancamento.dt_vencimento" required placeholder="yyyy-mm-dd">
+									<span class="error" ng-show="formLancamento.vencimento.$error.required">*</span><br>
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Carteira:</label>
+  									<input name="valor" ng-model="lancamento.valor" required placeholder="Valor…">
+									<span class="error" ng-show="formLancamento.valor.$error.required">*</span><br>
+								</div>
+							  </fieldset>
+						</form>
+					</div>
+					<div class="panel-footer">
+						<button class="inline close-this-dialog" ng-click="closeThisDialog()">Cancelar</button>
+						<button class="inline close-this-dialog" ng-click="salvarLancamento();closeThisDialog();busca()">Gravar</button>
+					</div>
+			</div>
+	    </div>
+    </script>	
+	<script type="text/ng-template" id="editOrPay">
+        <div class="ngdialog-message">
+			<div class="panel panel-primary">
+					<div class="panel-body">
+						<button class="inline close-this-dialog" ng-click="closeThisDialog();openPay();">Pagar</button>
+						<button class="inline close-this-dialog" ng-click="closeThisDialog();openEdit();">Editar</button>
+					</div>
+			</div>
+	    </div>
+    </script>	   
+	<script type="text/ng-template" id="dlgPay">
+        <div class="ngdialog-message">
+			<div class="panel panel-primary">
+					<div class="panel-body">
+						<form name="formLancamento"  class="form-horizontal">
+							<fieldset>
+							    <legend>Lançamento</legend>
+								<div class="control-group">
+								    <label for="conta" class="control-label">Conta:</label>
+								    <label for="conta" class="control-label">{{selectedItem.nm_conta}}</label>
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Carteira:</label>
+  									<input name="carteira" ng-model="selectedItem.id_carteira" required placeholder="Carteira…">
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Data Vencimento:</label>
+								    <label class="control-label">{{selectedItem.dt_vencimento}}</label>
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Data Pagamento:</label>
+  									<input name="dt_pagamento" ng-model="selectedItem.dt_pagamento" required placeholder="yyyy-mm-dd…">
+								</div>
+								<div class="control-group">
+								    <label class="control-label">Valor da Conta:</label>
+  									<input name="vl_pagamento" ng-model="selectedItem.valor" required >
+									<span class="error" ng-show="selectedItem.vl_pagamento.$error.required">*</span><br>
+								</div>
+							  </fieldset>
+						</form>
+						<button class="inline close-this-dialog" ng-click="closeThisDialog()">Pagar</button>
+					</div>
+			</div>
+	    </div>
+    </script>	
+	<script type="text/ng-template" id="dlgEdit">
+        <div class="ngdialog-message">
+			<div class="panel panel-primary">
+					<div class="panel-body">
+						<button class="inline close-this-dialog" ng-click="closeThisDialog()">Salvar</button>
+					</div>
+			</div>
+	    </div>
+    </script>	
+    <script type="text/javascript" src="../js/angular.js"></script>
+	<script src="../js/ngDialog.js"></script>
+	<script type="text/javascript" src="./FluxoCaixaController.js"></script>
+</body>
+</html>
