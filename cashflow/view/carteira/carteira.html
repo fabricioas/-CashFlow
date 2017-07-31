@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+<html lang="en" xmlns:ng="http://angularjs.org" ng-app="cashflow">
+<head>
+<meta charset="UTF-8">
+<title>Carteiras</title>
+<link rel="stylesheet" href="../../css/bootstrap/css/bootstrap.css">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body ng-controller="CarteiraController">
+
+	<div class="panel panel-primary">
+		<!-- Default panel contents -->
+		<div class="panel-heading ">Cadastro de Carteiras</div>
+		<div class="panel-body">
+			<div class="panel panel-primary" ng-show="!detalheOpened">
+				<div class="panel-body">
+					<fieldset>
+						<legend>Pesquisa</legend>
+
+						<div class="container-fluid form-horizontal">
+							<div class="row">
+								<div class="col-md-3">
+									<div class="input-group">
+										<input name="pesquisa" ng-model="txtPesquisa" type="text"
+											class="form-control" placeholder="Search for..."> <span
+											class="input-group-btn">
+											<button ng-click="pesquisar()" class="btn btn-default"
+												type="button">
+												<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+											</button>
+										</span>
+									</div>
+									<!-- /input-group -->
+								</div>
+								<div class="col-md-9"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-5	"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-5	">
+									<!-- Table -->
+									<table class="table">
+										<thead>
+											<tr>
+												<th width="10">#</th>
+												<th>Carteira</th>
+												<th><button ng-click="openDetalhe(null)"
+														class="btn btn-default btn-sm" type="button">
+														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+													</button></th>
+												<th></th>
+											<tr>
+										</thead>
+										<tbody ng-repeat="carteira in carteiras">
+											<tr>
+												<td>{{carteira.id_carteira}}</td>
+												<td>{{carteira.nm_carteira}}</td>
+												<td><button ng-click="openDetalhe(carteira)"
+														class="btn btn-default btn-sm" type="button">
+														<span class="glyphicon glyphicon-pencil"
+															aria-hidden="true"></span>
+													</button></td>
+												<td><button ng-click="deletar(carteira)"
+														class="btn btn-default btn-sm" type="button">
+														<span class="glyphicon glyphicon-remove"
+															aria-hidden="true"></span>
+													</button></td>
+
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="panel-footer"></div>
+			</div>
+			<div class="panel panel-primary" ng-show="detalheOpened">
+				<div class="panel-body">
+					<form name="formDetable" class="form-horizontal">
+						<fieldset>
+							<legend>Detalhes</legend>
+							<div class="control-group">
+								<label class="control-label">Carteira:</label> <input
+									name="carteira" ng-model="dataDetalhe.nm_carteira" required
+									placeholder="Carteira…"> <span class="error"
+									ng-show="formLancamento.carteira.$error.required">*</span><br>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="panel-footer">
+					<button class="inline close-this-dialog" ng-click="closeDetalhe()">Cancelar</button>
+					<button class="inline close-this-dialog" ng-click="salvar()">Gravar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../js/angular.js"></script>
+	<script type="text/javascript" src="./CarteiraController.js"></script>
+</body>
+</html>
